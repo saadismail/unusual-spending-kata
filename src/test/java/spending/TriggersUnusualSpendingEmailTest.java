@@ -3,6 +3,7 @@ package spending;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,8 @@ public class TriggersUnusualSpendingEmailTest {
         triggersUnusualSpendingEmail.trigger(userId);
 
         verify(emailGateway).sendEmail(paymentWithOverspendingCaptor.capture());
+
+        assertEquals(paymentsWithOverspending, paymentWithOverspendingCaptor.getValue());
     }
 
 }
