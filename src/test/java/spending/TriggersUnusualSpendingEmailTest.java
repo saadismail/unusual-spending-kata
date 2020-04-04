@@ -9,4 +9,12 @@ public class TriggersUnusualSpendingEmailTest {
 
     }
 
+    @Test(expected = AssertionError.class)
+    public void triggerTestNegativeUserId(){
+        TriggersUnusualSpendingEmail triggersUnusualSpendingEmail = new TriggersUnusualSpendingEmail();
+        triggersUnusualSpendingEmail.trigger(-1);
+    }
+
+
+
 }
