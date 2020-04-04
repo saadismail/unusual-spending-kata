@@ -2,13 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.testdouble</groupId>
-		<artifactId>test-training</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<artifactId>unusual-spending</artifactId>	
+	<groupId>com.testdouble</groupId>
+	<version>1.0.0</version>
+	<artifactId>unusual-spending</artifactId>
 	<packaging>jar</packaging>
 
 	<name>unusual-spending-kata</name>
@@ -19,12 +15,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.testdouble</groupId>
-			<artifactId>unusual-spending-vendor</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
