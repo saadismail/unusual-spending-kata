@@ -14,7 +14,6 @@ public class PaymentService {
         PaymentsOfCurrentAndPreviousMonth paymentsOfCurrentAndPreviousMonth =
                 paymentDataSource.fetch(userId);
 
-        paymentComparator.getPaymentsWithOverspending(paymentsOfCurrentAndPreviousMonth);
-        return new PaymentsWithOverspending();
+        return paymentComparator.getPaymentsWithOverspending(paymentsOfCurrentAndPreviousMonth);
     }
 }

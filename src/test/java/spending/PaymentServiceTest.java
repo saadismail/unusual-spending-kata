@@ -28,16 +28,17 @@ public class PaymentServiceTest {
         ArgumentCaptor<PaymentsOfCurrentAndPreviousMonth> paymentsOfCurrentAndPreviousMonthArgumentCaptor =
                 forClass(PaymentsOfCurrentAndPreviousMonth.class);
 
-        paymentService.getPaymentsWithOverspending(userId);
-
-        verify(paymentComparator)
-                .getPaymentsWithOverspending(paymentsOfCurrentAndPreviousMonthArgumentCaptor.capture());
-
         PaymentsWithOverspending paymentsWithOverspending = mock(PaymentsWithOverspending.class);
         when(paymentComparator.getPaymentsWithOverspending(paymentsOfCurrentAndPreviousMonth))
                 .thenReturn(paymentsWithOverspending);
 
+        PaymentsWithOverspending paymentsWithOverspendingActual = paymentService.getPaymentsWithOverspending(userId);
+
+        verify(paymentComparator)
+                .getPaymentsWithOverspending(paymentsOfCurrentAndPreviousMonthArgumentCaptor.capture());
+
         assertEquals(paymentsOfCurrentAndPreviousMonth, paymentsOfCurrentAndPreviousMonthArgumentCaptor.getValue());
+        assertEquals(paymentsWithOverspending, paymentsWithOverspendingActual);
 
     }
 
