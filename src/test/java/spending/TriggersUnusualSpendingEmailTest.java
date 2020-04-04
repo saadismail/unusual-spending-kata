@@ -10,6 +10,7 @@ public class TriggersUnusualSpendingEmailTest {
 
         PaymentsOfCurrentAndPreviousMonth paymentsOfCurrentAndPreviousMonth = PaymentDataSource.fetch(userId);
         PaymentsWithOverspending paymentsWithOverspending = PaymentComparator.compare(paymentsOfCurrentAndPreviousMonth);
+        EmailGateway.sendEmail(paymentsWithOverspending);
     }
 
 }
