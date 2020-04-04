@@ -3,6 +3,10 @@ package spending;
 public class PaymentsWithOverspending {
     int totalAmount;
 
+    public PaymentsWithOverspending(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -16,5 +20,9 @@ public class PaymentsWithOverspending {
     @Override
     public int hashCode() {
         return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }
