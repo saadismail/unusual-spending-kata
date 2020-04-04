@@ -4,35 +4,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DetectUnusualSpending {
+
+    public static final double THRESHOLD = 1.5;
+
     public static List<Payment> detect(List<Payment> lastMonthPayments, List<Payment> currentMonthPayments) {
-        Map<Category, Double> categoryLastMonthAmount = new HashMap<Category, Double>();
-        Map<Category, Double> categoryCurrentMonthAmount = new HashMap<Category, Double>();
+        Map<Category, Double> categoryLastMonthAmount = getGroupedCategoriesAmount(lastMonthPayments);
+        Map<Category, Double> categoryCurrentMonthAmount =  getGroupedCategoriesAmount(currentMonthPayments);
+        return filterUnusualPayments(categoryLastMonthAmount, categoryCurrentMonthAmount);
+    }
 
-        // TODO: These loops can be broken down into pure data processing functions
+    private static List<Payment> filterUnusualPayments(Map<Category, Double> categoryLastMonthAmount, Map<Category, Double> categoryCurrentMonthAmount) {
+        return categoryCurrentMonthAmount.entrySet().stream()
+                .filter(entry -> {
+                    Double lastMonthCategoryAmount = categoryLastMonthAmount.getOrDefault(entry.getKey(), 0.0);
+                    Double currentMonthCategoryAmount = entry.getValue();
+                    return currentMonthCategoryAmount >= THRESHOLD * lastMonthCategoryAmount;
+                })
+                .map(entry ->  new Payment(entry.getValue(), "Total", entry.getKey()))
+                .collect(Collectors.toList());
+    }
 
-        for (Payment payment : lastMonthPayments) {
-            Double amountInMap = categoryLastMonthAmount.getOrDefault(payment.getCategory(), 0.0);
-            categoryLastMonthAmount.put(payment.getCategory(), amountInMap + payment.getAmount());
+    private static Map<Category, Double> getGroupedCategoriesAmount(List<Payment> payments) {
+        Map<Category, Double> categoryAmount = new HashMap<Category, Double>();
+        for (Payment payment : payments) {
+            Double amountInMap = categoryAmount.getOrDefault(payment.getCategory(), 0.0);
+            categoryAmount.put(payment.getCategory(), amountInMap + payment.getAmount());
         }
-
-        for (Payment payment : currentMonthPayments) {
-            Double amountInMap = categoryCurrentMonthAmount.getOrDefault(payment.getCategory(), 0.0);
-            categoryCurrentMonthAmount.put(payment.getCategory(), amountInMap + payment.getAmount());
-        }
-
-        List<Payment> unusualPayments = new ArrayList<>();
-
-        for (Map.Entry<Category, Double> entry : categoryCurrentMonthAmount.entrySet()) {
-            Double lastMonthCategoryAmount = categoryLastMonthAmount.getOrDefault(entry.getKey(), 0.0);
-            Double currentMonthCategoryAmount = entry.getValue();
-
-            if (currentMonthCategoryAmount >= 1.5 * lastMonthCategoryAmount) {
-                unusualPayments.add(new Payment(currentMonthCategoryAmount, "Total", entry.getKey()));
-            }
-        }
-
-        return unusualPayments;
+        return categoryAmount;
     }
 }
