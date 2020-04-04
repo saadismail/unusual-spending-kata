@@ -16,7 +16,7 @@ public class DetectUnusualSpending {
         return filterUnusualPayments(categoryLastMonthAmount, categoryCurrentMonthAmount);
     }
 
-    private static List<Payment> filterUnusualPayments(Map<Category, Double> categoryLastMonthAmount, Map<Category, Double> categoryCurrentMonthAmount) {
+    public static List<Payment> filterUnusualPayments(Map<Category, Double> categoryLastMonthAmount, Map<Category, Double> categoryCurrentMonthAmount) {
         return categoryCurrentMonthAmount.entrySet().stream()
                 .filter(entry -> {
                     Double lastMonthCategoryAmount = categoryLastMonthAmount.getOrDefault(entry.getKey(), 0.0);
@@ -27,7 +27,7 @@ public class DetectUnusualSpending {
                 .collect(Collectors.toList());
     }
 
-    private static Map<Category, Double> getGroupedCategoriesAmount(List<Payment> payments) {
+    public static Map<Category, Double> getGroupedCategoriesAmount(List<Payment> payments) {
         Map<Category, Double> categoryAmount = new HashMap<Category, Double>();
         for (Payment payment : payments) {
             Double amountInMap = categoryAmount.getOrDefault(payment.getCategory(), 0.0);
