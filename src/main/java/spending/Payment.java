@@ -1,19 +1,19 @@
 package spending;
 
 public class Payment {
-    double price;
+    double amount;
     String description;
     Category category;
 
 
-    public Payment(double price, String description, Category category) {
-        this.price = price;
+    public Payment(double amount, String description, Category category) {
+        this.amount = amount;
         this.description = description;
         this.category = category;
     }
 
-    public double getPrice() {
-        return price;
+    public double getAmount() {
+        return amount;
     }
 
     public String getDescription() {

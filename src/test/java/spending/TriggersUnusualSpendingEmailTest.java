@@ -6,7 +6,8 @@ public class TriggersUnusualSpendingEmailTest {
 
     @Test
     public void triggerTest() {
-
+        TriggersUnusualSpendingEmail triggersUnusualSpendingEmail = new TriggersUnusualSpendingEmail();
+        triggersUnusualSpendingEmail.trigger(1);
     }
 
     @Test(expected = AssertionError.class)
@@ -14,7 +15,5 @@ public class TriggersUnusualSpendingEmailTest {
         TriggersUnusualSpendingEmail triggersUnusualSpendingEmail = new TriggersUnusualSpendingEmail();
         triggersUnusualSpendingEmail.trigger(-1);
     }
-
-
 
 }
