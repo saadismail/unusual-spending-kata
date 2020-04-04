@@ -2,8 +2,17 @@ package spending;
 
 public class TriggersUnusualSpendingEmail {
 
+	private final PaymentService paymentService;
+	private final EmailGateway emailGateway;
+
+	public TriggersUnusualSpendingEmail(PaymentService paymentService, EmailGateway emailGateway) {
+		this.paymentService = paymentService;
+		this.emailGateway = emailGateway;
+	}
+
 	public void trigger(long userId) {
-		// TODO: This is the entry point. Start with a test of this class
+		PaymentsWithOverspending paymentsWithOverspending = this.paymentService.getPaymentsWithOverspending(userId);
+		emailGateway.sendEmail(paymentsWithOverspending);
 	}
 
 }

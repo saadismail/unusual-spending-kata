@@ -1,7 +1,12 @@
 package spending;
 
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.ArgumentCaptor;
+
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 public class TriggersUnusualSpendingEmailTest {
 
@@ -9,18 +14,21 @@ public class TriggersUnusualSpendingEmailTest {
     public void triggerTest() {
         long userId = 1;
 
+        PaymentService paymentService = mock(PaymentService.class);
+        EmailGateway emailGateway = mock(EmailGateway.class);
 
-        PaymentDataSource paymentDataSource = Mockito.mock(PaymentDataSource.class);
-        PaymentComparator paymentComparator = Mockito.mock(PaymentComparator.class);
-        EmailGateway emailGateway = Mockito.mock(EmailGateway.class);
+        TriggersUnusualSpendingEmail triggersUnusualSpendingEmail =
+                new TriggersUnusualSpendingEmail(paymentService, emailGateway);
 
-        TriggersUnusualSpendingEmail triggersUnusualSpendingEmail = new TriggersUnusualSpendingEmail();
+        PaymentsWithOverspending paymentsWithOverspending = mock(PaymentsWithOverspending.class);
+        when(paymentService.getPaymentsWithOverspending(userId)).thenReturn(paymentsWithOverspending);
 
-        PaymentsOfCurrentAndPreviousMonth paymentsOfCurrentAndPreviousMonth = paymentDataSource.fetch(userId);
+        ArgumentCaptor<PaymentsWithOverspending> paymentWithOverspendingCaptor =
+                forClass(PaymentsWithOverspending.class);
 
-        PaymentsWithOverspending paymentsWithOverspending = paymentComparator.compare(paymentsOfCurrentAndPreviousMonth);
+        triggersUnusualSpendingEmail.trigger(userId);
 
-        emailGateway.sendEmail(paymentsWithOverspending);
+        verify(emailGateway).sendEmail(paymentWithOverspendingCaptor.capture());
     }
 
 }
